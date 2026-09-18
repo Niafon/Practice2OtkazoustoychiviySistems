@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlatBook — бронирование квартир</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">FlatBook</div>
+    <div class="node-badge" id="nodeBadge">backend: определяем…</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">Учебный сервис бронирования</div>
+        <h1>Квартиры для поездок без лишних шагов</h1>
+        <p>Найдите свободный вариант, выберите даты и создайте бронирование. Все запросы к каталогу и бронированию выполняются асинхронно через API.</p>
+      </div>
+
+      <form class="search-card" id="searchForm">
+        <label>
+          Город
+          <input id="city" name="city" placeholder="Например, Москва">
+        </label>
+        <label>
+          Заезд
+          <input id="checkIn" name="check_in" type="date">
+        </label>
+        <label>
+          Выезд
+          <input id="checkOut" name="check_out" type="date">
+        </label>
+        <label>
+          Гостей
+          <input id="guests" name="guests" type="number" min="1" max="20" value="2">
+        </label>
+        <button class="primary" type="submit">Найти квартиры</button>
+      </form>
+    </section>
+
+    <section class="content-section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Доступные варианты</div>
+          <h2>Квартиры</h2>
+        </div>
+        <div class="status" id="requestStatus">Загрузка…</div>
+      </div>
+      <div class="grid" id="apartments"></div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop hidden" id="modalBackdrop">
+    <section class="modal" aria-modal="true" role="dialog">
+      <button class="close" id="closeModal" aria-label="Закрыть">×</button>
+      <div class="eyebrow">Бронирование</div>
+      <h2 id="modalTitle">Квартира</h2>
+      <p class="muted" id="modalAddress"></p>
+
+      <form id="bookingForm" class="booking-form">
+        <input type="hidden" id="apartmentId">
+        <label>Имя<input id="guestName" required maxlength="120" placeholder="Иван Иванов"></label>
+        <label>Email<input id="email" required type="email" maxlength="200" placeholder="ivan@example.com"></label>
+        <div class="form-row">
+          <label>Заезд<input id="bookingCheckIn" required type="date"></label>
+          <label>Выезд<input id="bookingCheckOut" required type="date"></label>
+        </div>
+        <label>Гостей<input id="bookingGuests" required type="number" min="1" max="20" value="2"></label>
+        <button class="primary" type="submit">Забронировать</button>
+      </form>
+
+      <div id="bookingResult" class="booking-result hidden"></div>
+    </section>
+  </div>
+
+  <footer>
+    <div>FlatBook · Практическая работа №2</div>
+    <div>Приложение не завершает TLS и не хранит пользовательские сессии локально.</div>
+  </footer>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>

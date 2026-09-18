@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: flatbook
+      POSTGRES_USER: flatbook
+      POSTGRES_PASSWORD: flatbook
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flatbook -d flatbook"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - flatbook-db:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    ports:
+      - "5432:5432"
+
+  backend-1:
+    build: .
+    environment:
+      PORT: "8080"
+      INSTANCE_ID: "backend-1"
+      DATABASE_URL: "postgres://flatbook:flatbook@db:5432/flatbook?sslmode=disable"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8081:8080"
+
+  backend-2:
+    build: .
+    environment:
+      PORT: "8080"
+      INSTANCE_ID: "backend-2"
+      DATABASE_URL: "postgres://flatbook:flatbook@db:5432/flatbook?sslmode=disable"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8082:8080"
+
+volumes:
+  flatbook-db:
